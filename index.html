@@ -15,10 +15,12 @@
   <body>
     <h1>Welcome to My Telegram Mini App</h1>
     <p id="user-info"></p>
-    <form onsubmit="handleSubmit()">
+
+    <form onsubmit="handleSubmit">
       <input name="message" />
       <button onclick="sendData()">Send</button>
     </form>
+	<p id="t-data"></p>
 
     <script>
       const tg = window.Telegram.WebApp;
@@ -26,7 +28,7 @@
 
       const user = tg.initDataUnsafe.user;
       const userInfoEl = document.getElementById("user-info");
-	  console.info('tg', tg);
+	  document.getElementById("user-info").innerHTML = JSON.stringify(tg);
 
 	  userInfoEl.innerHTML = '';
       // Display user info
@@ -35,16 +37,16 @@
 		el.textContent = `${key}: ${value}`;
 
 		userInfoEl.append(el);
-        // document.getElementById(
-        //   "user-info"
-        // ).innerText = `Hello, ${tg.initDataUnsafe.user.first_name}!`;
       });
 
       // Function to send data back to the bot
       function handleSubmit(e) {
         e?.preventDefault();
-        const message = document.querySelector('input[name="message"]').value;
+		e?.stopPropagation();
+		const inputEl = document.querySelector('input[name="message"]');
+        const message = inputEl.value;
         tg.sendData(message || "Draft Message!");
+		inputEl.value = '';
       }
     </script>
   </body>
