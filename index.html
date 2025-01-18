@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Telegram Web App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to My Telegram Mini App</h1>
+    <p id="user-info"></p>
+    <form onsubmit="handleSubmit()">
+      <input name="message" />
+      <button onclick="sendData()">Send</button>
+    </form>
+
+    <script>
+      const tg = window.Telegram.WebApp;
+      tg.expand(); // Expands the Web App to full screen
+
+      const user = tg.initDataUnsafe.user;
+      const userInfoEl = document.getElementById("user-info");
+
+	  userInfoEl.innerHTML = '';
+      // Display user info
+      Object.entries(user).forEach(([key, value]) => {
+		const el = document.createElement('p');
+		el.textContent = `${key}: ${value}`;
+
+		userInfoEl.append(el);
+        // document.getElementById(
+        //   "user-info"
+        // ).innerText = `Hello, ${tg.initDataUnsafe.user.first_name}!`;
+      });
+
+      // Function to send data back to the bot
+      function handleSubmit(e) {
+        e?.preventDefault();
+        const message = document.querySelector('input[name="message"]').value;
+        tg.sendData(message || "Draft Message!");
+      }
+    </script>
+  </body>
+</html>
